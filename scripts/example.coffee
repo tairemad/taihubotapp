@@ -10,9 +10,9 @@
 
 module.exports = (robot) ->
 
-  # robot.hear /badger/i, (res) ->
-  #   res.send "Badgers? BADGERS? WE DON'T NEED NO STINKIN BADGERS"
-  #
+  # robot.hear /hola/i, (res) ->
+  #   res.send "Oi! Tudo Bom!"
+  
   # robot.respond /open the (.*) doors/i, (res) ->
   #   doorType = res.match[1]
   #   if doorType is "pod bay"
@@ -24,10 +24,10 @@ module.exports = (robot) ->
   #   res.emote "makes a freshly baked pie"
   #
   # lulz = ['lol', 'rofl', 'lmao']
-  #
+  
   # robot.respond /lulz/i, (res) ->
   #   res.send res.random lulz
-  #
+  
   # robot.topic (res) ->
   #   res.send "#{res.message.text}? That's a Paddlin'"
   #
