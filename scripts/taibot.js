@@ -24,25 +24,28 @@
 // Use an array to store a number of your favorite quotes. When you ping your bot, have it return a random quote from your list.
 
 
-module.exports = function(robot){
+module.exports = function(taibot){
 
-	robot.hear(/howdy/, function(msg){
+	//if hears the word howdy
+
+	taibot.hear(/howdy/, function(msg){
 		msg.send('Hodor!');
 	});
 
+	//if hears the word dementor
 
-	robot.hear(/dementor/,function(msg){
+	taibot.hear(/dementor/,function(msg){
 		msg.send('Expecto Patronum....' + ' https://media.giphy.com/media/4XIuQFlyytdxm/giphy.gif');
 		return msg.reply('dementor gone...you are safe now');
 	});
 
+	//if you @bot what is your favorite spits out case 
 
-
-	robot.respond(/what is your favorite (.*)/, function(msg) {
+	taibot.respond(/what is your favorite (.*)/, function(msg) {
 		var fav = msg.match[1];
 		switch (fav) {
 			case "food":
-			return msg.reply("I'm a robot--I don't eat food!");
+			return msg.reply("I'm a taibot--I don't eat food!");
 			break;
 			case "artist":
 			return msg.reply("It's gotta be Drake!");
@@ -53,24 +56,29 @@ module.exports = function(robot){
 			case "hubot":
 			return msg.reply("Me...Obviously!");
 			break;
+			case "color":
+			return msg.reply("I am a robot we dont see color!");
+			break;
 			default:
 			return msg.reply("I don't have a favorite " + fav + ". What's yours?");
 		}
 	});
 
+	//if a person leaves or enters a chatroom 
+
 	var enterMessage = ['Welcome to the darkside', 'Hodor', 'Welcome friend'];
 	var leaveMessage = ['Bye! Sad panda', 'Man down', 'Hodor! Hodor!'];
 
 
-	robot.enter(function(respond) {
+	taibot.enter(function(respond) {
 		return respond.send(respond.random(enterMessage));
 	});
 
-	robot.leave(function(respond) {
+	taibot.leave(function(respond) {
 		return respond.send(respond.random(leaveMessage));
 	});
 
-	robot.respond(/do we have class today/, function(msg){
+	taibot.respond(/do we have class today/, function(msg){
 		var d = new Date();
 		var today = d.getDay();
 
@@ -82,6 +90,7 @@ module.exports = function(robot){
 
 	});
 
+	//if hears bye or later from any user 
 
 	var listGoodbyes = ["Bye, {name}.", "Later, {name}.", "Take care, {name}.", "Adios, {name}.", "Have a good day, {name}."];
 
@@ -91,17 +100,19 @@ module.exports = function(robot){
 		return message.replace(/{name}/, name);
 	};
 
-	robot.hear(/(bye|later)/, function(msg) {
+	taibot.hear(/(bye|later)/, function(msg) {
 		var byeMessage = goodbye(msg.message.user.name);
 		return msg.send(byeMessage);
 
 	});
 
+	// direct message if hears hi siri
 
-	robot.hear(/hi siri/, function(res) {
-		return robot.messageRoom(res.message.user.name, "hi im hubot not siri");
+	taibot.hear(/hi siri/, function(res) {
+		return taibot.messageRoom(res.message.user.name, "hi im hubot not siri");
 	});
 
+	//random quotes generator 
 
 	var quotes = [{quote: "Only two things are infinite, the universe and human stupidity, and I'm not sure about the former.", author: "Albert Einstein"},{quote: "In the End, we will remember not the words of our enemies, but the silence of our friends.", author: "Martin Luther King Jr."}, {quote: "The only way to get rid of a temptation is to yield to it.", author: "Oscar Wilde"}, {quote: "Once you eliminate the impossible, whatever remains, no matter how improbable, must be the truth.", author: "Sherlock Holmes"}, {quote: "I've learned that people will forget what you said, people will forget what you did, but people will never forget how you made them feel.", author: "Maya Angelou"},{quote: "Forgive your enemies, but never forget their names.", author: "John F. Kennedy"},{quote: "He who hesitates is a damned fool.", author: "Mae West"}];
 	
@@ -111,10 +122,54 @@ module.exports = function(robot){
 		return newQuote;
 	};
 
-	robot.respond(/quote/, function(msg) {
-		  msg.send(getQuote());
+	taibot.respond(/quote/, function(msg) {
+		msg.send(getQuote());
 	});
 
+	//if hears im worthy from certain users 
 
-};
+	taibot.hear(/im worthy/, function(msg) {
+		if (msg.message.user.name == "tairemadailey" || msg.message.user.name == "kgaraffa" || msg.message.user.name == "skrice"){
+			return msg.send('You are NOT worthy!!!');
+		} else if(msg.message.user.name == 'leon-guyupfront'){
+			return msg.send('You are sooo worthy!!!');
+		}
+	});
+
+	//rock, paper, scissors
+
+	var wins = {
+		'scissors': {
+			'paper': 'scissors cut paper'
+		},
+		'paper': {
+			'rock': 'paper covers rock'
+		},
+		'rock': {
+			'scissors': 'rock breaks scissors'
+		}
+	};
+	var result;
+	var actions = function(msg, userChoice) {
+		var choices = ['scissors', 'paper', 'rock'];
+		var choice = choices[Math.floor(Math.random() * 3)];
+		var beaten = wins[userChoice];
+		if (beaten[choice] != " ") {
+			result = wins[userChoice][choice];
+		} else {
+			result = wins[choice][userChoice];
+		}
+		if (!result) {
+			result = "Draw!";
+		}
+		msg.send("Hubot chooses " + choice);
+		return msg.send(result);
+	};
+
+	return taibot.respond(/(rock|paper|scissors)/, function(msg) {
+		var userChoice = msg.match[1];
+		return actions(msg, userChoice);
+	});
+
+}; //end module.exports
 
