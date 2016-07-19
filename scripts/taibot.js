@@ -1,28 +1,3 @@
-// Your app must:
-
-// Have a message post to Slack based on user input
-// Do at least 3 different things.
-// One of the commands must utilize the list of people in the class to send a direct message or reply.
-// Leverage Hubot
-// Use at least 1 conditional to change the outcome of a Slackbot.
-
-// Bonus
-
-// Leverage a for loop to iterate over a collection
-// Introduce a random component
-// Include an image in the response in addition to text
-
-// Necessary Deliverables
-
-
-// Potential Project Ideas
-
-// Class today
-// Ask your bot whether we have class today or not. Use JavaScript to check today's date and then respond back with whether we have class or not.
-
-// Random quote
-// Use an array to store a number of your favorite quotes. When you ping your bot, have it return a random quote from your list.
-
 
 module.exports = function(taibot){
 
@@ -137,33 +112,39 @@ module.exports = function(taibot){
 	});
 
 	//rock, paper, scissors
-
-	var wins = {
-		'scissors': {
-			'paper': 'scissors cut paper'
-		},
-		'paper': {
-			'rock': 'paper covers rock'
-		},
-		'rock': {
-			'scissors': 'rock breaks scissors'
-		}
-	};
-	var result;
+	var winner;
 	var actions = function(msg, userChoice) {
-		var choices = ['scissors', 'paper', 'rock'];
-		var choice = choices[Math.floor(Math.random() * 3)];
-		var beaten = wins[userChoice];
-		if (beaten[choice] != " ") {
-			result = wins[userChoice][choice];
-		} else {
-			result = wins[choice][userChoice];
+		var options = ['scissors', 'paper', 'rock'];
+		var hubotChoice = options[Math.floor(Math.random() * 3)];
+		if (userChoice === 'rock'){
+			if (hubotChoice === 'paper') {
+				winner = "Paper covers rock Hubot wins!";
+			}else if (hubotChoice === 'scissors'){
+				winner = "Rock breaks scissors " + msg.message.user.name + ' wins.';
+			}
 		}
-		if (!result) {
-			result = "Draw!";
+
+		if (userChoice === 'paper'){
+			if (hubotChoice === 'rock') {
+				winner = "Paper covers rock " + msg.message.user.name + ' wins.';
+			}else if (hubotChoice === 'scissors'){
+				winner = "Scissors cut paper Hubot wins!";
+			}
 		}
-		msg.send("Hubot chooses " + choice);
-		return msg.send(result);
+
+		if (userChoice === 'scissors'){
+			if (hubotChoice === 'paper') {
+				winner = "Scissors cut paper " + msg.message.user.name + ' wins.';
+			}else if (hubotChoice === 'rock'){
+				winner = "Rock breaks scissors Hubot wins!";
+			}
+		}
+
+		if (userChoice === hubotChoice) {
+			winner = "Draw!";
+		}
+		msg.send("Hubot picked " + hubotChoice);
+		return msg.send(winner);
 	};
 
 	return taibot.respond(/(rock|paper|scissors)/, function(msg) {
