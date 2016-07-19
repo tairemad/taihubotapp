@@ -7,7 +7,7 @@
 The commands that work in taihubotapp
 
 You can say "hodwy", "dementor", "bye", "later", or "hi siri", ("im worthy" depending on the user) group-1 hubot will respond.
-If you @group-1 with "do we have class today", "quote" , or 'what is your favorite "___" ', hubot will answer you.
+If you @group-1 with "do we have class today", "quote" , or 'what is your favorite "___" ', or "rock, paper, scissors" hubot will answer you.
 If someone leaves or enters the room hubot will respond.
 
 ________________________________________________________________________________________________________________
