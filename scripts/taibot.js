@@ -141,7 +141,7 @@ module.exports = function(taibot){
 		}
 
 		if (userChoice === hubotChoice) {
-			winner = "Draw!";
+			winner = "It's a Draw!";
 		}
 		msg.send("Hubot picked " + hubotChoice);
 		return msg.send(winner);
