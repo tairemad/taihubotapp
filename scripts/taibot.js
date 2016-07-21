@@ -3,21 +3,21 @@ module.exports = function(taibot){
 
 	//if hears the word howdy
 
-	taibot.hear(/howdy/, function(msg){
+	taibot.hear(/howdy/i, function(msg){
 		msg.send('Hodor!');
 	});
 
 	//if hears the word dementor
 
-	taibot.hear(/dementor/,function(msg){
+	taibot.hear(/dementor/i,function(msg){
 		msg.send('Expecto Patronum....' + ' https://media.giphy.com/media/4XIuQFlyytdxm/giphy.gif');
 		return msg.reply('dementor gone...you are safe now');
 	});
 
 	//if you @bot what is your favorite spits out case 
 
-	taibot.respond(/what is your favorite (.*)/, function(msg) {
-		var fav = msg.match[1];
+	taibot.respond(/what is your favorite (.*)/i, function(msg) {
+		var fav = msg.match[1].toLowerCase();
 		switch (fav) {
 			case "food":
 			return msg.reply("I'm a taibot--I don't eat food!");
@@ -53,7 +53,7 @@ module.exports = function(taibot){
 		return respond.send(respond.random(leaveMessage));
 	});
 
-	taibot.respond(/do we have class today/, function(msg){
+	taibot.respond(/do we have class today/i, function(msg){
 		var d = new Date();
 		var today = d.getDay();
 
@@ -75,7 +75,7 @@ module.exports = function(taibot){
 		return message.replace(/{name}/, name);
 	};
 
-	taibot.hear(/(bye|later)/, function(msg) {
+	taibot.hear(/(bye|later)/i, function(msg) {
 		var byeMessage = goodbye(msg.message.user.name);
 		return msg.send(byeMessage);
 
@@ -83,7 +83,7 @@ module.exports = function(taibot){
 
 	// direct message if hears hi siri
 
-	taibot.hear(/hi siri/, function(res) {
+	taibot.hear(/hi siri/i, function(res) {
 		return taibot.messageRoom(res.message.user.name, "hi im hubot not siri");
 	});
 
@@ -97,13 +97,13 @@ module.exports = function(taibot){
 		return newQuote;
 	};
 
-	taibot.respond(/quote/, function(msg) {
+	taibot.respond(/quote/i, function(msg) {
 		msg.send(getQuote());
 	});
 
 	//if hears im worthy from certain users 
 
-	taibot.hear(/im worthy/, function(msg) {
+	taibot.hear(/im worthy/i, function(msg) {
 		if (msg.message.user.name == "tairemadailey" || msg.message.user.name == "kgaraffa" || msg.message.user.name == "skrice"){
 			return msg.send('You are NOT worthy!!!');
 		} else if(msg.message.user.name == 'leon-guyupfront'){
@@ -147,8 +147,8 @@ module.exports = function(taibot){
 		return msg.send(winner);
 	};
 
-	return taibot.respond(/(rock|paper|scissors)/, function(msg) {
-		var userChoice = msg.match[1];
+	return taibot.respond(/(rock|paper|scissors)/i, function(msg) {
+		var userChoice = msg.match[1].toLowerCase();
 		return actions(msg, userChoice);
 	});
 
